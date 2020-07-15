@@ -1,8 +1,4 @@
-version: '3'
-
-networks:
-    laravel:
-
+version: '3.7'
 
 services:
     nginx:
@@ -24,6 +20,8 @@ services:
             context: .
             dockerfile: Dockerfile
         container_name: php
+        restart: unless-stopped
+        working_dir: /var/www/html
         volumes:
             - ./src:/var/www/html
         ports:
@@ -41,7 +39,6 @@ services:
         volumes:
             - mysql_data:/var/lib/mysql
             - ./mysql/my.cnf:/etc/mysql/my.cnf
-
         environment:
             MYSQL_DATABASE: homestead
             MYSQL_USER: homestead
@@ -99,6 +96,9 @@ services:
         networks:
             - laravel
 
+networks:
+    laravel:
+        driver: bridge
 volumes:
     mysql_data:
         driver: local
